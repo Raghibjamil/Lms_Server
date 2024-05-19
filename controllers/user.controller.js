@@ -323,6 +323,7 @@ const getProfile= async(req,res,next)=>{
  */
  const changePassword = async (req, res, next) => {
   // Destructuring the necessary data from the req object
+  console.log(req.body);
   const { oldPassword, newPassword } = req.body;
   const { id } = req.user; // because of the middleware isLoggedIn
 
@@ -372,8 +373,8 @@ const getProfile= async(req,res,next)=>{
  const updateUser =async (req, res, next) => {
   // Destructuring the necessary data from the req object
   const { fullName } = req.body;
-  // const { id } = req.params;
-  const { id } = req.user; // because of the middleware isLoggedIn
+  const { id } = req.params;
+  // const { id } = req.user; // because of the middleware isLoggedIn
 
 
   const user = await User.findById(id);
