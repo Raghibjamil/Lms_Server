@@ -31,6 +31,8 @@ export const buySubscription= async(req,res,next)=>{
  // Finding the user based on the ID
  const user = await User.findById(id);
 
+//  console.log(user);
+
  if (!user) {
    return next(new AppError('Unauthorized, please login'));
  }
@@ -38,16 +40,32 @@ export const buySubscription= async(req,res,next)=>{
  // Checking the user role
  if (user.role === 'ADMIN') {
    return next(new AppError('Admin cannot purchase a subscription', 400));
+
  }
-  // Creating a subscription using razorpay that we imported from the server
+
+
+try {
   const subscription = await razorpay.subscriptions.create({
-   plan_id: process.env.RAZORPAY_PLAN_ID, // The unique plan ID
-   customer_notify: 1, // 1 means razorpay will handle notifying the customer, 0 means we will not notify the customer
-   // total_count: 12, // 12 means it will charge every month for a 1-year sub.
- });
-  // Adding the ID and the status to the user account
+    plan_id: process.env.RAZORPAY_PLAN_ID, // The unique plan ID
+    customer_notify: 1, // 1 means Razorpay will handle notifying the customer, 0 means you will notify the customer
+   total_count: 1, // 12 means it will charge every month for a 1-year subscription
+  });
+
+  console.log('Subscription created successfully:', subscription);
   user.subscription.id = subscription.id;
   user.subscription.status = subscription.status;
+
+  console.log(user.subscription);
+ 
+
+} catch (error) {
+  console.error('Error creating subscription:', error);
+}
+
+  
+
+  // console.log(user.subscription.id);
+  // console.log(user.subscription.status);
 
   // Saving the user object
   await user.save();
@@ -55,7 +73,7 @@ export const buySubscription= async(req,res,next)=>{
   res.status(200).json({
     success: true,
     message: 'subscribed successfully',
-    subscription_id: subscription.id,
+    subscription_id: user.subscription.id,
   });
   }catch(err){
     return next(new AppError(err.message, 400));
@@ -92,12 +110,26 @@ export const verifySubscription= async(req,res,next)=>{
 .update(${razorpay_payment_id}|${subscriptionId}): This updates the HMAC object with the data you want to generate the HMAC for. It concatenates the Razorpay payment ID and subscription ID with a pipe (|) separator.
 
 .digest('hex'): This computes the digest of the HMAC as a hexadecimal string. The resulting generatedSignature is the HMAC signature for the concatenated data. */
-  const generatedSignature = crypto
-    .createHmac('sha256', process.env.RAZORPAY_SECRET)
-    .update(`${razorpay_payment_id}|${subscriptionId}`)
-    .digest('hex');
+  // const generatedSignature = crypto
+  //   .createHmac('sha256', process.env.RAZORPAY_SECRET)
+  //   .update(`${razorpay_payment_id}|${subscriptionId}`)
+  //   .digest('hex');
+  // const generatedSignature = hmac_sha256(razorpay_payment_id + "|" + subscriptionId, process.env.RAZORPAY_SECRET);
 
+  const generatedSignature = crypto
+  .createHmac('sha256', process.env.RAZORPAY_SECRET)
+  .update(`${razorpay_payment_id}|${subscriptionId}`)
+  .digest('hex');
+
+
+  console.log(`Secret value:-${process.env.RAZORPAY_SECRET}`);
+
+    console.log(`razorpay_payment_id:-${razorpay_payment_id}`);
+    
   // Check if generated signature and signature received from the frontend is the same or not
+  console.log(`generatedSignature: ${generatedSignature} `);
+  console.log(`razorpay_signature: ${razorpay_signature}`);
+  //console.log( razorpay_signature);
   if (generatedSignature !== razorpay_signature) {
     return next(new AppError('Payment not verified, please try again.', 400));
   }
