@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { allPayments, buySubscription, cancelSubscription, getRazorpayApiKey, verifySubscription } from '../controllers/Payment.controllers.js';
-import { authorizeRoles, isLoggedIn } from '../middlewares/auth.middleware.js';
+import { authorizeRoles, authorizeSubscribers, isLoggedIn } from '../middlewares/auth.middleware.js';
 // import {
 //   getRazorpayApiKey,
 //   buySubscription,
@@ -20,7 +20,7 @@ router.route('/subscribe').post(isLoggedIn, buySubscription);
 router.route('/verify').post(isLoggedIn, verifySubscription);
 router
   .route('/unsubscribe')
-  .post(isLoggedIn, cancelSubscription);
+  .post(isLoggedIn, authorizeSubscribers,cancelSubscription);
 router.route('/razorpay-key').get(isLoggedIn, getRazorpayApiKey);
 router.route('/').get(isLoggedIn, authorizeRoles('ADMIN'), allPayments);
 
