@@ -2,10 +2,6 @@ import path from "path";
 
 import multer from "multer";
 
-
-// this multer is help to convert the binary data of form into the url path of file that will uploaded in UI ....
-// and upload this file  inside the upload folder in url format...
-
 const upload = multer({
   dest: "uploads/",
   limits: { fileSize: 50 * 1024 * 1024 }, // 50 mb in size max limit
