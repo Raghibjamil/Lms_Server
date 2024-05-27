@@ -242,7 +242,7 @@ const getProfile= async(req,res,next)=>{
     // If email sent successfully send the success response
     res.status(200).json({
       success: true,
-      message: `Reset password token has been sent to ${email} successfully`,
+      message: `Reset  email  successfully  sended to registered email id:-${email}`,
     });
   } catch (error) {
     // If some error happened we need to clear the forgotPassword* fields in our DB

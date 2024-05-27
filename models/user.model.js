@@ -93,7 +93,7 @@ userSchema.methods = {
       .digest('hex');
 
     // Adding forgot password expiry to 15 minutes
-    this.forgotPasswordExpiry = Date.now() + 15 * 60 * 1000;
+    this.forgotPasswordExpiry = Date.now() + 1 * 60 * 1000;
 
     return resetToken;
   },
