@@ -51,11 +51,11 @@ try {
    total_count: 12, // 12 means it will charge every month for a 1-year subscription
   });
 
-  console.log('Subscription created successfully:', subscription);
+ // console.log('Subscription created successfully:', subscription);
   user.subscription.id = subscription.id;
   user.subscription.status = subscription.status;
 
-  console.log(user.subscription);
+ // console.log(user.subscription);
  
 
 } catch (error) {
@@ -122,13 +122,13 @@ export const verifySubscription= async(req,res,next)=>{
   .digest('hex');
 
 
-  console.log(`Secret value:-${process.env.RAZORPAY_SECRET}`);
+//  console.log(`Secret value:-${process.env.RAZORPAY_SECRET}`);
 
-    console.log(`razorpay_payment_id:-${razorpay_payment_id}`);
+ //   console.log(`razorpay_payment_id:-${razorpay_payment_id}`);
     
   // Check if generated signature and signature received from the frontend is the same or not
-  console.log(`generatedSignature: ${generatedSignature} `);
-  console.log(`razorpay_signature: ${razorpay_signature}`);
+//  console.log(`generatedSignature: ${generatedSignature} `);
+  //console.log(`razorpay_signature: ${razorpay_signature}`);
   //console.log( razorpay_signature);
   if (generatedSignature !== razorpay_signature) {
     return next(new AppError('Payment not verified, please try again.', 400));
@@ -204,7 +204,7 @@ export const cancelSubscription= async(req,res,next)=>{
     razorpay_subscription_id: subscriptionId,
   });
 
-  console.log(`razorpay_subscription_id:- ${payment}`);
+ // console.log(`razorpay_subscription_id:- ${payment}`);
 
   // Getting the time from the date of successful payment (in milliseconds)
   const timeSinceSubscribed = Date.now() - payment.createdAt;
@@ -227,9 +227,9 @@ export const cancelSubscription= async(req,res,next)=>{
     speed: 'optimum', // This is required
   });
 
-  console.log("payment succesfully refunded!!");
+ // console.log("payment succesfully refunded!!");
 
-  console.log(`payment.razorpay_payment_id:-${payment.razorpay_payment_id}`);
+  // console.log(`payment.razorpay_payment_id:-${payment.razorpay_payment_id}`);
 
   user.subscription.id = undefined; // Remove the subscription ID from user DB
   user.subscription.status = undefined; // Change the subscription Status in user DB
@@ -239,8 +239,8 @@ export const cancelSubscription= async(req,res,next)=>{
     // await Payment.deleteOne({ id: payment._id });
     const result = await Payment.deleteOne({ razorpay_payment_id: payment.razorpay_payment_id });
 
-    console.log(result);
-    console.log('Payment record deleted successfully');
+    //console.log(result);
+   // console.log('Payment record deleted successfully');
 
   // Send the response
   res.status(200).json({

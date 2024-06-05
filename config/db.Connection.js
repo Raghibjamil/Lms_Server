@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 mongoose.set('strictQuery',false);
 
 
-// const MONGOCONN=process.env.MONGO_ATLAS_URL || process.env.MONGO_URL;
-const MONGOCONN=process.env.MONGO_URL
+const MONGOCONN=process.env.MONGO_ATLAS_URL || process.env.MONGO_URL;
+// const MONGOCONN=process.env.MONGO_URL
 
 const connectToDB=()=>{
     mongoose.connect(MONGOCONN)

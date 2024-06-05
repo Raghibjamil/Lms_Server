@@ -83,7 +83,7 @@ JSON.stringify() is a JavaScript method that converts a JavaScript object or val
 user.password=undefined;
 
 const token=await user.generateJWTToken();
-console.log(token)
+// console.log(token)
 // setting the cookie.....
 res.cookie('token',token,cookieOptions);
    // If all good send the response to the frontend
@@ -230,7 +230,7 @@ const getProfile= async(req,res,next)=>{
   //   "host"
   // )}/api/v1/user/reset/${resetToken}`;
   const resetPasswordUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-  console.log(`URL path for reset password:-${resetPasswordUrl}`)
+  // console.log(`URL path for reset password:-${resetPasswordUrl}`)
 
   // We here need to send an email to the user with the token
   const subject = 'Reset Password';
@@ -283,7 +283,7 @@ const getProfile= async(req,res,next)=>{
     return next(new AppError('Password is required', 400));
   }
 
-  console.log(forgotPasswordToken);
+  // console.log(forgotPasswordToken);
 
   // Checking if token matches in DB and if it is still valid(Not expired)
   const user = await User.findOne({
@@ -323,7 +323,7 @@ const getProfile= async(req,res,next)=>{
  */
  const changePassword = async (req, res, next) => {
   // Destructuring the necessary data from the req object
-  console.log(req.body);
+ // console.log(req.body);
   const { oldPassword, newPassword } = req.body;
   const { id } = req.user; // because of the middleware isLoggedIn
 

@@ -87,7 +87,7 @@ import Razorpay from 'razorpay';
 
       // Run only if user sends a file
   if (req.file) {
-    console.log(req.file)
+    //console.log(req.file)
     try {
       const result = await cloudinary.v2.uploader.upload(req.file.path, {
         folder: 'lms', // Save files in a folder named lms
@@ -217,7 +217,7 @@ const addLectureToCourseById=async (req,res,next)=>{
   
          // Run only if user sends a file
          if (req.file) {
-          console.log(req.file)
+        //  console.log(req.file)
           try {
             const result = await cloudinary.v2.uploader.upload(req.file.path, {
               folder: 'lms', // Save files in a folder named lms
@@ -270,8 +270,8 @@ const removeLectureFromCourse=async(req,res,next)=>{
     const { courseId, lectureId } = req.params;
 
 
-    console.log(courseId);
-    console.log(lectureId);
+ //   console.log(courseId);
+   // console.log(lectureId);
   
     // Checking if both courseId and lectureId are present
     if (!courseId) {
